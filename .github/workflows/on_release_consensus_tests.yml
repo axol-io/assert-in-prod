@@ -31,4 +31,35 @@ jobs:
       - name: Load Network Params and Run Ethereum Package
         run: |
           # Create a local network_params.yaml file from the repository or use an existing one
-          curl --location --request POST '127.0.0.1:63588' --header 'Content-Type: application/json' --data-raw '{"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 83}'
+          kurtosis enclave inspect my-testnet
+
+      # - name: Download and build assertoor
+      #   run: |
+      #     # Run assertoor in pipeline
+      #     git clone https://github.com/ethpandaops/assertoor.git && cd assertoor && make build
+
+      # - name: List all files in repo
+      #   run: |
+      #     # Run assertoor in pipeline
+      #     ls -a
+
+      # - name: Run basic eth syncing test
+      #   run: |
+      #     # Run assertoor in pipeline
+      #     ./bin/assertoor --config=https://raw.githubusercontent.com/axol-io/assert-in-prod/refs/heads/Add_Nethermind_All_Consenus_clients_tests/.github/consensus_synced.yaml
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1
+        with:
+          path: .github/geth.js  # Use local path instead of raw URL
+          flags: --vus 50 --duration 30s
+          cloud-run-locally: true
+          cloud-comment-on-pr: true
+          only-verify-scripts: false
+          debug: false

@@ -1,0 +1,16 @@
+endpoints:
+  - name: "local"
+    executionUrl: http://127.0.0.1:32773
+    consensusUrl: http://127.0.0.1:32786 
+
+tests:
+- name: "basic"
+  timeout: 48h
+  tasks:
+  - name: check_clients_are_healthy
+    title: "Consensus client is healthy"
+    config:
+      skipExecutionCheck: true
+
+  - name: check_consensus_sync_status
+    title: consensus is synced

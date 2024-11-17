@@ -2,7 +2,7 @@
 
 BKK ETHGlobal github actions CI/CD by axol.io team implementing on-release multi EL/CL client configurations. 
 
-This essentially stiches together Kurtosis and Assertoor to robustly test ETH client builds on-release (versus previously done manually or by cronjobs).
+This essentially stiches together Kurtosis/Ethereum-Paackage and Ethpandaops/Assertoor to robustly test ETH client builds on-release (versus previously done manually or by cronjobs).
 
 [![Kurtosis Ethereum Cluster Setup and Tests](https://github.com/axol-io/assert-in-prod/actions/workflows/on_release_consensus_tests.yml/badge.svg)](https://github.com/axol-io/assert-in-prod/actions/runs/11872920635/job/33087197450)
 

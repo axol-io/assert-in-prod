@@ -1,0 +1,65 @@
+name: Kurtosis Ethereum Cluster Setup and Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  setup-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Kurtosis CLI
+        run: |
+          echo "deb [trusted=yes] https://apt.fury.io/kurtosis-tech/ /" | sudo tee /etc/apt/sources.list.d/kurtosis.list
+          sudo apt update
+          sudo apt install -y kurtosis-cli
+
+      - name: Start Kurtosis Engine
+        run: kurtosis engine start
+
+      - name: Run Ethereum Package with Local Network Params
+        run: |
+          # Run the Ethereum Package using the local network_params.yaml file
+          kurtosis run --enclave my-testnet github.com/ethpandaops/ethereum-package --args-file https://raw.githubusercontent.com/axol-io/assert-in-prod/refs/heads/Add_Nethermind_All_Consenus_clients_tests/.github/network_params.yml
+
+      - name: Load Network Params and Run Ethereum Package
+        run: |
+          # Create a local network_params.yaml file from the repository or use an existing one
+          kurtosis enclave inspect my-testnet
+
+      # - name: Download and build assertoor
+      #   run: |
+      #     # Run assertoor in pipeline
+      #     git clone https://github.com/ethpandaops/assertoor.git && cd assertoor && make build
+
+      # - name: List all files in repo
+      #   run: |
+      #     # Run assertoor in pipeline
+      #     ls -a
+
+      # - name: Run basic eth syncing test
+      #   run: |
+      #     # Run assertoor in pipeline
+      #     ./bin/assertoor --config=https://raw.githubusercontent.com/axol-io/assert-in-prod/refs/heads/Add_Nethermind_All_Consenus_clients_tests/.github/consensus_synced.yaml
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1
+        with:
+          path: .github/geth.js  # Use local path instead of raw URL
+          flags: --vus 50 --duration 30s
+          cloud-run-locally: true
+          cloud-comment-on-pr: true
+          only-verify-scripts: false
+          debug: false

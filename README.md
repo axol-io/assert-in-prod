@@ -1,4 +1,19 @@
 <img align="left" src="./.github/resources/assertoor.png" width="60">
+
+BKK ETHGlobal github actions CI/CD by axol.io team implementing on-release multi EL/CL client configurations. 
+
+This essentially stiches together Kurtosis and Assertoor to robustly test ETH client builds on-release (versus previously done manually or by cronjobs).
+
+[![Kurtosis Ethereum Cluster Setup and Tests](https://github.com/axol-io/assert-in-prod/actions/workflows/on_release_consensus_tests.yml/badge.svg)](https://github.com/axol-io/assert-in-prod/actions/workflows/on_release_consensus_tests.yml)
+
+^ Click to jump and re-run the barebones tests. 
+
+We also would like to help highlight on-release how each new release is impacting: sync-time, peer connectivity, bandwidth.
+This will be done by measuring the previous release against the newest 'on-release'. All client configurations will be spun up in parallel in k6.
+
+---
+
+
 <h1>Assertoor: Ethereum Testnet Testing Tool</h1>
 
 ## Overview
